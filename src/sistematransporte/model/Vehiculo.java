@@ -95,4 +95,54 @@ abstract class Vehiculo implements Imprimible, Calculable {
   public void setTicketsVendidos(int ticketsVendidos) {
     this.ticketsVendidos = ticketsVendidos;
   }
+  
+  public boolean venderTicket(){
+    if(pasajerosActuales >= capacidadMaxima){
+      return false;
+    }
+    
+    pasajerosActuales++;
+    ticketsVendidos++;
+    return true;
+  }
+  
+  
+  @Override
+  public double calcularTotal(){
+    return ticketsVendidos * tarifa;
+  }
+
+
+  @Override
+  public String toString() {
+    return placa + ";" + ruta + ";" + tarifa + ";" + capacidadMaxima + ";" +
+           pasajerosActuales + ";" + estado + ";" + idLicenciaConductor + ";" + ticketsVendidos;
+  }
+
+
+  public void fromString(String data) {
+    String[] partes = data.split(";");
+
+    this.placa = partes[0];
+    this.ruta = partes[1];
+    this.tarifa = Double.parseDouble(partes[2]);
+    this.capacidadMaxima = Integer.parseInt(partes[3]);
+    this.pasajerosActuales = Integer.parseInt(partes[4]);
+    this.estado = Boolean.parseBoolean(partes[5]);
+    this.idLicenciaConductor = partes[6];
+    this.ticketsVendidos = Integer.parseInt(partes[7]);
+  }
+  
+  
+  @Override
+  public void imprimirDetalle() {
+    System.out.println("| Tipo De Vehiculo: " + getTipo() +
+                       "| Placa: " + getPlaca() +
+                       "| Ruta: " + getRuta() +
+                       "| Tarifa: " + getTarifa() +
+                       "| Capcacidad Maxima: " + getCapacidadMaxima() +
+                       "| Pasajeros Actuales: " + getPasajerosActuales() +
+                       "| Estado: " + (getEstado() ? "Disponible"  : "No Disponible") + 
+                       "| Id Licencia Conductor: " + (getIdLicenciaConductor() != null ? getIdLicenciaConductor() : "No Hay Conductor Asignado"));
+  }
 }
