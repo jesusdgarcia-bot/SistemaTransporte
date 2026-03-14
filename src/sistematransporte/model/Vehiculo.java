@@ -4,7 +4,7 @@ import sistematransporte.model.interfaces.*;
  *
  * @author jssdv
  */
-abstract class Vehiculo implements Imprimible, Calculable {
+public abstract class Vehiculo implements Imprimible, Calculable {
   private String placa;
   private String ruta;
   private double tarifa;

@@ -8,7 +8,7 @@ package sistematransporte.model;
  *
  * @author abisa
  */
-class Bus extends Vehiculo {
+public class Bus extends Vehiculo {
   public Bus() {
   }
   
