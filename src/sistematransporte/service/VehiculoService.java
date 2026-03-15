@@ -151,4 +151,30 @@ public class VehiculoService {
 
     vehiculoDao.modificarRuta(placa, ruta);
   }
+  
+  public void asignarConductor(String placa, String idLicConductor) {
+    if(placa == null || placa.trim().isEmpty()){
+      throw new IllegalArgumentException("La placa no puede estar vacía");
+    }
+
+    if(idLicConductor == null || idLicConductor.trim().isEmpty()){
+      throw new IllegalArgumentException("El id de la licencia del conductor no puede estar vacío");
+    }
+
+    if(vehiculoDao.verificarPlaca(placa)){
+      throw new IllegalArgumentException("No hay ningun vehicuo con la placa: " + placa);
+    }
+
+    if(!conductorDao.verificarIdLicConductor(idLicConductor)){
+      throw new IllegalArgumentException("No hay ningun conductor con el id de licencia: " + idLicConductor);
+    }
+    
+    Conductor c = conductorDao.buscar(idLicConductor);
+
+    if(!c.getDisponible()){
+      throw new IllegalArgumentException("Conductor no disponible");
+    }
+
+    vehiculoDao.asignarConductor(placa, idLicConductor);
+  }
 }
