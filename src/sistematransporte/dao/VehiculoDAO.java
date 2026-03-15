@@ -156,6 +156,37 @@ public class VehiculoDao {
         }
     }
     
+    public void modificarRuta(String placa, String ruta) {
+
+        String[] archivos = {
+            RutaArchivos.BUS,
+            RutaArchivos.MICROBUS,
+            RutaArchivos.BUSETA
+        };
+
+        for(String archivo : archivos){
+
+            List<Vehiculo> lista = listarArchivo(archivo);
+
+            try (BufferedWriter bw = new BufferedWriter(
+                    new FileWriter(archivo, false))) {
+
+                for (Vehiculo v : lista) {
+
+                    if (v.getPlaca().equalsIgnoreCase(placa)) {
+                        v.setRuta(ruta);
+                    }
+
+                    bw.write(v.toString());
+                    bw.newLine();
+                }
+
+            } catch (IOException e) {
+                System.out.println("Error al modificar ruta: " + e.getMessage());
+            }
+        }
+    }
+    
     private List<Vehiculo> listarArchivo(String archivo){
 
         List<Vehiculo> lista = new ArrayList<>();
