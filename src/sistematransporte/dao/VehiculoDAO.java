@@ -53,7 +53,42 @@ public class VehiculoDao {
         }
     }
     
-    
+    public Vehiculo buscar(String placa) {
+
+        String[] archivos = {
+            RutaArchivos.BUS,
+            RutaArchivos.MICROBUS,
+            RutaArchivos.BUSETA
+        };
+
+        for(String archivo : archivos){
+
+            try (BufferedReader br = new BufferedReader(
+                    new FileReader(archivo))) {
+
+                String linea;
+
+                while ((linea = br.readLine()) != null) {
+
+                    if (linea.trim().isEmpty()) continue;
+
+                    String[] datos = linea.split(";");
+
+                    if (datos[0].equalsIgnoreCase(placa)) {
+
+                        Vehiculo v = crearVehiculo(datos);
+                        v.fromString(linea);
+                        return v;
+                    }
+                }
+
+            } catch (IOException e) {
+                System.out.println("Error al buscar vehículo: " + e.getMessage());
+            }
+        }
+
+        return null;
+    }
     
     private Vehiculo crearVehiculo(String[] datos){
 
