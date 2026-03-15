@@ -288,4 +288,11 @@ public class VehiculoDao {
                 throw new IllegalArgumentException("Tipo de vehículo inválido");
         }
     }
+    
+    
+  
+    private String verEstado(String placa) {
+      Vehiculo v = buscar(placa);
+      return (v.getEstado() ? "Disponible" : "No Disponible");
+    }
 }
