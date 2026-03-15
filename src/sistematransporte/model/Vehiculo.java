@@ -129,7 +129,7 @@ public abstract class Vehiculo implements Imprimible, Calculable {
     this.capacidadMaxima = Integer.parseInt(partes[3]);
     this.pasajerosActuales = Integer.parseInt(partes[4]);
     this.estado = Boolean.parseBoolean(partes[5]);
-    this.idLicenciaConductor = partes[6];
+    this.idLicenciaConductor = "null".equals(partes[6]) ? null : partes[6];
     this.ticketsVendidos = Integer.parseInt(partes[7]);
   }
   
