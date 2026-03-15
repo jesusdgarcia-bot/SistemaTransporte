@@ -119,4 +119,12 @@ public class VehiculoService {
 
     return listaFiltrada;
   }
+  
+  public void eliminar(String placa) {
+    if(vehiculoDao.verificarPlaca(placa)){
+      throw new IllegalArgumentException("No existe ningún vehiculo con la placa: " + placa);
+    }
+
+    vehiculoDao.eliminar(placa);
+  }
 }
