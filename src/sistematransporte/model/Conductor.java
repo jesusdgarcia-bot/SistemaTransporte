@@ -9,5 +9,9 @@ package sistematransporte.model;
  * @author almen
  */
 public class Conductor {
+    private boolean disponible;
     
+    public boolean getDisponible(){
+        return disponible;
+    }
 }
