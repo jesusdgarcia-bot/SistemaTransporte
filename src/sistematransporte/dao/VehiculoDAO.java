@@ -24,4 +24,17 @@ public class VehiculoDao {
     public VehiculoDao(){
         this.conductorDao = new ConductorDao();
     }   
+    
+    private String obtenerArchivo(String tipo){
+        switch(tipo){
+            case "BUS":
+                return RutaArchivos.BUS;
+            case "MICROBUS":
+                return RutaArchivos.MICROBUS;
+            case "BUSETA":
+                return RutaArchivos.BUSETA;
+            default:
+                throw new IllegalArgumentException("Tipo de vehículo inválido");
+        }
+    }
 }
