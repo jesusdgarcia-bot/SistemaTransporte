@@ -291,7 +291,7 @@ public class VehiculoDao {
     
     
   
-    private String verEstado(String placa) {
+    public String verEstado(String placa) {
       Vehiculo v = buscar(placa);
       return (v.getEstado() ? "Disponible" : "No Disponible");
     }
