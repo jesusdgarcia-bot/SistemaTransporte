@@ -247,6 +247,10 @@ public class VehiculoDao {
         }
     }
     
+    public boolean verificarPlaca(String placa) {
+        return buscar(placa) == null;
+    }
+    
     private List<Vehiculo> listarArchivo(String archivo){
 
         List<Vehiculo> lista = new ArrayList<>();
