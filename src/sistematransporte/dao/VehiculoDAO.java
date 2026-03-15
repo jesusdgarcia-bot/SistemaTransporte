@@ -52,4 +52,22 @@ public class VehiculoDao {
             System.out.println("Error al guardar vehículo: " + e.getMessage());
         }
     }
+    
+    
+    
+    private Vehiculo crearVehiculo(String[] datos){
+
+        int capMax = Integer.parseInt(datos[3]);
+
+        switch (capMax) {
+            case 45:
+                return new Bus();
+            case 25:
+                return new Microbus();
+            case 19:
+                return new Buseta();
+            default:
+                throw new IllegalArgumentException("Tipo de vehículo inválido");
+        }
+    }
 }
