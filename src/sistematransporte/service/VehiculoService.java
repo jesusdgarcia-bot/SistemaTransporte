@@ -127,4 +127,28 @@ public class VehiculoService {
 
     vehiculoDao.eliminar(placa);
   }
+  
+  public String modificarEstado(String placa) {
+    if(vehiculoDao.verificarPlaca(placa)){
+      throw new IllegalArgumentException("No existe ningún vehiculo con la placa: " + placa);
+    }
+
+    String estAnt = vehiculoDao.verEstado(placa);
+    vehiculoDao.modificarEstado(placa);
+    String estPost = vehiculoDao.verEstado(placa);
+
+    return estAnt + "-" + estPost;
+  }
+
+  public void modificarRuta(String placa, String ruta) {
+    if(vehiculoDao.verificarPlaca(placa)){
+      throw new IllegalArgumentException("No existe ningún vehiculo con placa: " + placa);
+    }
+
+    if(ruta == null || ruta.trim().isEmpty()){
+      throw new IllegalArgumentException("La ruta no puede estar vacía");
+    }
+
+    vehiculoDao.modificarRuta(placa, ruta);
+  }
 }
