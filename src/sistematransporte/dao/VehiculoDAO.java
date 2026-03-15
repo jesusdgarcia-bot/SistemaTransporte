@@ -37,4 +37,19 @@ public class VehiculoDao {
                 throw new IllegalArgumentException("Tipo de vehículo inválido");
         }
     }
+    
+    public void registrar(Vehiculo vehiculo) {
+
+        String archivo = obtenerArchivo(vehiculo.getTipo());
+
+        try (BufferedWriter bw = new BufferedWriter(
+                new FileWriter(archivo, true))) {
+
+            bw.write(vehiculo.toString());
+            bw.newLine();
+
+        } catch (IOException e) {
+            System.out.println("Error al guardar vehículo: " + e.getMessage());
+        }
+    }
 }
