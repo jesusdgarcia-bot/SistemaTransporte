@@ -57,4 +57,14 @@ public class VehiculoService {
         throw new IllegalArgumentException("Tipo de vehiculo invalido");
     }
   }
+  
+  public Vehiculo buscar(String placa) {
+    Vehiculo vehiculo = vehiculoDao.buscar(placa);
+
+    if(vehiculo == null) {
+      throw new IllegalArgumentException("Vehiculo con placa " + placa + " no encontrado");
+    }
+
+    return vehiculo;
+  }
 }
