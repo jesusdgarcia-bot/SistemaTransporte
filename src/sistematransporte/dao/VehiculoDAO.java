@@ -4,7 +4,6 @@ import sistematransporte.model.Vehiculo;
 import sistematransporte.model.Bus;
 import sistematransporte.model.Microbus;
 import sistematransporte.model.Buseta;
-import sistematransporte.dao.ConductorDao;
 import sistematransporte.util.RutaArchivos;
 
 import java.io.*;
@@ -17,12 +16,7 @@ import java.util.List;
  */
 
 public class VehiculoDao {
-
-    private ConductorDao conductorDao;
-
-    public VehiculoDao(){
-        this.conductorDao = new ConductorDao();
-    }   
+    public VehiculoDao(){    }   
     
     private String obtenerArchivo(String tipo){
         switch(tipo){
