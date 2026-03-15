@@ -4,7 +4,6 @@ import sistematransporte.model.Vehiculo;
 import sistematransporte.model.Bus;
 import sistematransporte.model.Microbus;
 import sistematransporte.model.Buseta;
-import sistematransporte.model.Conductor;
 import sistematransporte.dao.ConductorDao;
 import sistematransporte.util.RutaArchivos;
 
@@ -214,6 +213,36 @@ public class VehiculoDao {
 
             } catch (IOException e) {
                 System.out.println("Error al modificar estado: " + e.getMessage());
+            }
+        }
+    }
+    
+    public void asignarConductor(String placa, String idLicenciaConductor) {
+        String[] archivos = {
+            RutaArchivos.BUS,
+            RutaArchivos.MICROBUS,
+            RutaArchivos.BUSETA
+        };
+
+        for(String archivo : archivos){
+
+            List<Vehiculo> lista = listarArchivo(archivo);
+
+            try (BufferedWriter bw = new BufferedWriter(
+                    new FileWriter(archivo, false))) {
+
+                for (Vehiculo v : lista) {
+
+                    if (v.getPlaca().equalsIgnoreCase(placa)) {
+                        v.setIdLicenciaConductor(idLicenciaConductor);
+                    }
+
+                    bw.write(v.toString());
+                    bw.newLine();
+                }
+
+            } catch (IOException e) {
+                System.out.println("Error al asignar conductor: " + e.getMessage());
             }
         }
     }
