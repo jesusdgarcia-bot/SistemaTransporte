@@ -90,6 +90,43 @@ public class VehiculoDao {
         return null;
     }
     
+    public List<Vehiculo> listar() {
+
+        List<Vehiculo> lista = new ArrayList<>();
+
+        String[] archivos = {
+            RutaArchivos.BUS,
+            RutaArchivos.MICROBUS,
+            RutaArchivos.BUSETA
+        };
+
+        for(String archivo : archivos){
+
+            try (BufferedReader br = new BufferedReader(
+                    new FileReader(archivo))) {
+
+                String linea;
+
+                while ((linea = br.readLine()) != null) {
+
+                    if (linea.trim().isEmpty()) continue;
+
+                    String[] datos = linea.split(";");
+
+                    Vehiculo v = crearVehiculo(datos);
+                    v.fromString(linea);
+
+                    lista.add(v);
+                }
+
+            } catch (IOException e) {
+                System.out.println("Error al listar vehículos: " + e.getMessage());
+            }
+        }
+
+        return lista;
+    }
+    
     private Vehiculo crearVehiculo(String[] datos){
 
         int capMax = Integer.parseInt(datos[3]);
