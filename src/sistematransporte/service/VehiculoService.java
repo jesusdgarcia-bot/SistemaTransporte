@@ -67,4 +67,56 @@ public class VehiculoService {
 
     return vehiculo;
   }
+  
+  public List<Vehiculo> listar() {
+    List<Vehiculo> lista = vehiculoDao.listar();
+
+    if(lista == null || lista.isEmpty()){
+      throw new IllegalArgumentException("No existen vehiculos registrados en la lista");
+    }
+
+    return lista;
+  }
+
+  public List<Vehiculo> listarDisponibles() {
+    List<Vehiculo> listaSinFiltrar = vehiculoDao.listar();
+    List<Vehiculo> listaFiltrada = new ArrayList<>();
+
+    if(listaSinFiltrar == null || listaSinFiltrar.isEmpty()){
+      throw new IllegalArgumentException("No hay vehiculos disponibles");
+    }
+
+    for(Vehiculo v : listaSinFiltrar){
+      if(v.getEstado()){
+        listaFiltrada.add(v);
+      }
+    }
+
+    if(listaFiltrada.isEmpty()){
+      throw new IllegalArgumentException("No hay vehiculos disponibles");
+    }
+
+    return listaFiltrada;
+  }
+
+  public List<Vehiculo> listarSinConductor() {
+    List<Vehiculo> listaSinFiltrar = vehiculoDao.listar();
+    List<Vehiculo> listaFiltrada = new ArrayList<>();
+
+    if(listaSinFiltrar == null || listaSinFiltrar.isEmpty()){
+      throw new IllegalArgumentException("No existen vehiculos registrados");
+    }
+
+    for(Vehiculo v : listaSinFiltrar){
+      if(v.getIdLicenciaConductor() == null){
+        listaFiltrada.add(v);
+      }
+    }
+
+    if(listaFiltrada.isEmpty()){
+      throw new IllegalArgumentException("Todos los vehiculos tienen conductor asignado");
+    }
+
+    return listaFiltrada;
+  }
 }
