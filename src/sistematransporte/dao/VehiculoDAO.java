@@ -127,6 +127,35 @@ public class VehiculoDao {
         return lista;
     }
     
+    public void eliminar(String placa) {
+
+        String[] archivos = {
+            RutaArchivos.BUS,
+            RutaArchivos.MICROBUS,
+            RutaArchivos.BUSETA
+        };
+
+        for(String archivo : archivos){
+
+            List<Vehiculo> lista = listarArchivo(archivo);
+
+            try (BufferedWriter bw = new BufferedWriter(
+                    new FileWriter(archivo, false))) {
+
+                for (Vehiculo v : lista) {
+
+                    if (!v.getPlaca().equalsIgnoreCase(placa)) {
+                        bw.write(v.toString());
+                        bw.newLine();
+                    }
+                }
+
+            } catch (IOException e) {
+                System.out.println("Error al eliminar vehículo: " + e.getMessage());
+            }
+        }
+    }
+    
     private List<Vehiculo> listarArchivo(String archivo){
 
         List<Vehiculo> lista = new ArrayList<>();
