@@ -47,4 +47,12 @@ public class Conductor extends Persona implements Imprimible {
         return disponible;
     }
     
+     @Override
+    public void imprimirDetalle() {
+        System.out.println("=== CONDUCTOR ===");
+        System.out.println("Cedula:    " + getCedula());
+        System.out.println("Nombre:    " + getNombre());
+        System.out.println("Licencia:  " + numeroLicencia);
+        System.out.println("Categoria: " + categoriaLicencia);
+    }
 }
