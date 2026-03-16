@@ -45,6 +45,18 @@ public class Ticket implements Calculable, Imprimible {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
+     @Override
+    public void imprimirDetalle() {
+        System.out.println("=== TICKET ===");
+        System.out.println("ID:           " + id);
+        System.out.println("Pasajero:     " + pasajero.getNombre() + " (" + pasajero.getCedula() + ")");
+        System.out.println("Vehiculo:     " + vehiculo.getPlaca());
+        System.out.println("Origen:       " + origen);
+        System.out.println("Destino:      " + destino);
+        System.out.println("Fecha compra: " + fechaCompra);
+        System.out.println("Valor final:  $" + String.format("%.0f", valorFinal));
+    }
+    
      public int getId() { return id; }
     public void setId(int id) { this.id = id; }
  
