@@ -65,4 +65,60 @@ public class TicketService {
         return true;
         
 }
+    
+    // read - listar todos los tickets
+    public List<String[]> listarTickets() {
+        return ticketDao.listarTodosRaw();
+    }
+ 
+    // read - buscar ticket por id
+    public String[] buscarTicket(int id) {
+        String[] t = ticketDao.buscarPorIdRaw(id);
+        if (t == null) {
+            System.out.println("No se encontro ticket con id: " + id);
+        }
+        return t;
+    }
+ 
+    // update - actualizar datos del ticket (origen, destino, fecha)
+    public boolean actualizarTicket(int id, String nuevoOrigen, String nuevoDestino) {
+        String[] raw = ticketDao.buscarPorIdRaw(id);
+        if (raw == null) {
+            System.out.println("No se encontro ticket con id: " + id);
+            return false;
+        }
+ 
+        Pasajero pasajero = pasajeroDao.buscarPorCedula(raw[1]);
+        if (pasajero == null) return false;
+ 
+        Ticket actualizado = new Ticket(id, pasajero, null, raw[3], nuevoOrigen, nuevoDestino);
+        actualizado.setValorFinal(Double.parseDouble(raw[6]));
+ 
+        boolean ok = ticketDao.actualizarTicket(actualizado);
+        if (ok) System.out.println("Ticket actualizado correctamente.");
+        return ok;
+    }
+ 
+    // delete - cancelar ticket (y decrementar pasajerosActuales en el vehiculo)
+    public boolean cancelarTicket(int id) {
+        String[] raw = ticketDao.buscarPorIdRaw(id);
+        if (raw == null) {
+            System.out.println("No se encontro ticket con id: " + id);
+            return false;
+        }
+ 
+        
+        
+        Vehiculo vehiculo = vehiculoDao.buscarPorPlaca(raw[2]);
+        if (vehiculo != null) {
+            int actuales = vehiculo.getPasajerosActuales();
+            if (actuales > 0) vehiculo.setPasajerosActuales(actuales - 1);
+            vehiculoDao.actualizarVehiculo(vehiculo);
+        }
+        
+ 
+        boolean ok = ticketDao.eliminarTicket(id);
+        if (ok) System.out.println("Ticket cancelado correctamente.");
+        return ok;
+    }
 }
