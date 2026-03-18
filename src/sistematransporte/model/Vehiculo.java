@@ -145,4 +145,8 @@ public abstract class Vehiculo implements Imprimible, Calculable {
                        "| Estado: " + (getEstado() ? "Disponible"  : "No Disponible") + 
                        "| Id Licencia Conductor: " + (getIdLicenciaConductor() != null ? getIdLicenciaConductor() : "No Hay Conductor Asignado"));
   }
+
+    public boolean tieneCupos() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

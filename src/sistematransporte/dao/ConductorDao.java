@@ -20,7 +20,12 @@ import sistematransporte.model.Conductor;
 public class ConductorDao {
     
     public Conductor buscar(String idLicConductor){
-        return new Conductor();
+        for (Conductor c: conductores){
+            if(c.getNumeroLicencia().equals(idLicConductor)){
+                return c;
+            }   
+        }
+        return null;
     }
     
     public boolean verificarIdLicConductor(String idLicConductor){

@@ -20,7 +20,7 @@ public class Conductor extends Persona implements Imprimible {
         this.numeroLicencia = numeroLicencia;
         this.categoriaLicencia = categoriaLicencia;
     }
- 
+
     public String getNumeroLicencia() {
         return numeroLicencia;
     }

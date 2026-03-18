@@ -36,14 +36,10 @@ public class Ticket implements Calculable, Imprimible {
      */
     @Override
     public double calcularTotal() {
-        valorFinal = vehiculo.getTarifaBase() * (1 - pasajero.calcularDescuento());
+        valorFinal = vehiculo.getTarifa() * (1 - pasajero.calcularDescuento());
         return valorFinal;
     }
 
-    @Override
-    public void imprimirDetalle() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     
      @Override
     public void imprimirDetalle() {

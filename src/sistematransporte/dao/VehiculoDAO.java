@@ -16,6 +16,8 @@ import java.util.List;
  */
 
 public class VehiculoDao {
+
+    private String ruta;
     public VehiculoDao(){    }   
     
     private String obtenerArchivo(String tipo){
@@ -44,6 +46,11 @@ public class VehiculoDao {
         } catch (IOException e) {
             System.out.println("Error al guardar vehículo: " + e.getMessage());
         }
+    }
+ 
+    public void actualizarVehiculo (Vehiculo vehiculo){
+        modificarRuta(ruta);
+        modificarEstado(ruta);
     }
     
     public Vehiculo buscar(String placa) {
@@ -149,7 +156,7 @@ public class VehiculoDao {
         }
     }
     
-    public void modificarRuta(String placa, String ruta) {
+    public void modificarRuta(String placa) {
 
         String[] archivos = {
             RutaArchivos.BUS,
@@ -295,4 +302,9 @@ public class VehiculoDao {
       Vehiculo v = buscar(placa);
       return (v.getEstado() ? "Disponible" : "No Disponible");
     }
+    
 }
+
+   
+
+    

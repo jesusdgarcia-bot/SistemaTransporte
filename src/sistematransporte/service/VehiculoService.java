@@ -149,7 +149,7 @@ public class VehiculoService {
       throw new IllegalArgumentException("La ruta no puede estar vacía");
     }
 
-    vehiculoDao.modificarRuta(placa, ruta);
+    vehiculoDao.modificarRuta(placa);
   }
   
   public void asignarConductor(String placa, String idLicConductor) {
