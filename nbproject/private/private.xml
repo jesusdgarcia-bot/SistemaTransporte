@@ -4,8 +4,20 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/SistemaTransporte.java</file>
-            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/dao/VehiculoDao.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/dao/VehiculoDAO.java</file>
             <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/view/Menu.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/model/Vehiculo.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/dao/TicketDao.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/dao/PasajeroDao.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/dao/ConductorDao.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/model/Persona.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/model/Ticket.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/service/ConductorService.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/service/TicketService.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/model/Conductor.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/model/interfaces/Imprimible.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/model/PasajeroRegular.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/service/VehiculoService.java</file>
         </group>
     </open-files>
 </project-private>

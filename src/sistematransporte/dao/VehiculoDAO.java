@@ -29,7 +29,7 @@ public class VehiculoDao {
             case "BUSETA":
                 return RutaArchivos.BUSETA;
             default:
-                throw new IllegalArgumentException("Tipo de vehículo inválido");
+                throw new IllegalArgumentException("Tipo de vehículo invalido");
         }
     }
     
@@ -83,7 +83,7 @@ public class VehiculoDao {
                 }
 
             } catch (IOException e) {
-                System.out.println("Error al buscar vehículo: " + e.getMessage());
+                System.out.println("Error al buscar vehiculo: " + e.getMessage());
             }
         }
 
@@ -120,7 +120,7 @@ public class VehiculoDao {
                 }
 
             } catch (IOException e) {
-                System.out.println("Error al listar vehículos: " + e.getMessage());
+                System.out.println("Error al listar vehiculos: " + e.getMessage());
             }
         }
 
@@ -151,7 +151,7 @@ public class VehiculoDao {
                 }
 
             } catch (IOException e) {
-                System.out.println("Error al eliminar vehículo: " + e.getMessage());
+                System.out.println("Error al eliminar vehiculo: " + e.getMessage());
             }
         }
     }
@@ -292,7 +292,7 @@ public class VehiculoDao {
             case 19:
                 return new Buseta();
             default:
-                throw new IllegalArgumentException("Tipo de vehículo inválido");
+                throw new IllegalArgumentException("Tipo de vehiculo invalido");
         }
     }
     
