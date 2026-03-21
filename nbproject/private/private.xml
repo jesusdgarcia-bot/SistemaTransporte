@@ -19,6 +19,11 @@
             <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/model/PasajeroRegular.java</file>
             <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/service/VehiculoService.java</file>
             <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/util/RutaArchivos.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/service/PasajeroService.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/service/EstadisticasService.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/model/Pasajero.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/model/PasajeroAdultoMayor.java</file>
+            <file>file:/C:/Users/jssdv/OneDrive/Documentos/NetBeansProjects/sistemaTransporte/src/sistematransporte/model/PasajeroEstudiante.java</file>
         </group>
     </open-files>
 </project-private>

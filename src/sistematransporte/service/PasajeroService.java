@@ -19,8 +19,8 @@ import java.util.List;
 public class PasajeroService {
      private PasajeroDao pasajeroDao;
  
-    public PasajeroService(PasajeroDao pasajeroDao) {
-        this.pasajeroDao = pasajeroDao;
+    public PasajeroService( ) {
+        this.pasajeroDao = new PasajeroDao();
     }
  
     // CREATE - registrar pasajero regular
