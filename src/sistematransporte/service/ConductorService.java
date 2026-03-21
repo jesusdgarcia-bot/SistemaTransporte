@@ -18,8 +18,8 @@ public class ConductorService {
     
     private ConductorDao conductorDao;
  
-    public ConductorService(ConductorDao conductorDao) {
-        this.conductorDao = conductorDao;
+    public ConductorService() {
+        this.conductorDao = new ConductorDao();
     }
  
     // CREATE - registrar un nuevo conductor

@@ -1,8 +1,9 @@
 package sistematransporte.view;
 import java.util.Scanner;
 import java.util.List;
+import sistematransporte.model.Conductor;
 import sistematransporte.model.Vehiculo;
-
+import sistematransporte.service.ConductorService;
 import sistematransporte.service.VehiculoService;
 /**
  *
@@ -11,10 +12,12 @@ import sistematransporte.service.VehiculoService;
 public class Menu {
     private Scanner scanner;
     private VehiculoService vehiculoService;
+    private ConductorService conductorService;
     
     public Menu(){
         this.scanner = new Scanner(System.in);
         this.vehiculoService = new VehiculoService();
+        this.conductorService = new ConductorService();
     }
     
     public void iniciar(){
@@ -127,9 +130,83 @@ public class Menu {
    
    
     private void menuConductores() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+         int opcion;
+        do {
+            System.out.println("\n+===============================+");
+            System.out.println("|   GESTION DE CONDUCTORES  ");
+            System.out.println("+===============================+");
+            System.out.println("|  1. Registrar conductor");
+            System.out.println("|  2. Listar conductores");
+            System.out.println("|  3. Buscar conductor");
+            System.out.println("|  4. Eliminar conductor");
+            System.out.println("|  0. Volver");
+            System.out.println("+===============================+");
+            System.out.print("Seleccione una opcion: ");
+            opcion = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcion) {
+                case 1: registrarConductor(); break;
+                case 2: listarConductores(); break;
+                case 3: buscarConductor(); break;
+                case 4: eliminarConductor(); break;
+                case 0: break;
+                default: System.out.println("️ Opcion no valida...");
+            }
+        } while (opcion != 0);
     }
 
+    
+    private void registrarConductor(){
+         System.out.println("\n REGISTRAR CONDUCTOR");
+       System.out.println("Numero de cedula: ");
+       String cedula = scanner.nextLine();
+       System.out.println("Nombre: ");
+       String nombre = scanner.nextLine();
+       System.out.println("Numero de licencia: ");
+       String numeroLicencia = scanner.nextLine();
+       System.out.println("categoria de licencia: ");
+       String categoriaLicencia = scanner.nextLine();
+       try {
+          conductorService.registrarConductor( cedula,  nombre,  numeroLicencia, categoriaLicencia);
+       } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+       }
+    }  
+    
+    private void listarConductores(){
+           System.out.println("\n── Lista de Conductores ──");
+        List<Conductor> lista = conductorService.listarConductores();
+        for (Conductor v: lista) {
+            v.imprimirDetalle();
+    }
+    }
+    
+     private void buscarConductor(){
+            System.out.println("\n── Buscar Conductor ──");
+        System.out.print("Ingrese el numero de licencia: ");
+        String numeroLicencia = scanner.nextLine();
+        try {
+            Conductor e = conductorService.buscarConductor(numeroLicencia);
+             e.imprimirDetalle();
+        } catch (IllegalArgumentException e) {
+            System.out.println(" Error: " + e.getMessage());
+        }
+    }
+    
+    private void eliminarConductor(){
+        System.out.println("\n── Eliminar Conductor ──");
+        System.out.print("Ingrese el numero de licencia: ");
+        String numeroLicencia = scanner.nextLine();
+        try {
+            conductorService.eliminarConductor(numeroLicencia);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+    
+    
+    
     private void menuPasajeros() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
