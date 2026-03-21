@@ -1,12 +1,15 @@
 package sistematransporte.view;
 
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.List;
 import sistematransporte.model.Conductor;
 import sistematransporte.model.Pasajero;
+import sistematransporte.model.Ticket;
 import sistematransporte.model.Vehiculo;
 import sistematransporte.service.ConductorService;
 import sistematransporte.service.PasajeroService;
+import sistematransporte.service.TicketService;
 import sistematransporte.service.VehiculoService;
 
 /**
@@ -19,12 +22,14 @@ public class Menu {
     private VehiculoService vehiculoService;
     private ConductorService conductorService;
     private PasajeroService pasajeroService;
+    private TicketService ticketService;
 
     public Menu() {
         this.scanner = new Scanner(System.in);
         this.vehiculoService = new VehiculoService();
         this.conductorService = new ConductorService();
         this.pasajeroService = new PasajeroService();
+        this.ticketService = new TicketService();
     }
 
     public void iniciar() {
@@ -291,19 +296,19 @@ public class Menu {
             pasajeroService.registrarAdultoMayor(cedula, nombre);
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
-        }
+        }; break;
             case 2:   try {
             pasajeroService.registrarEstudiante(cedula, nombre);
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
-        } 
+        } ; break;
             case 3: try {
             pasajeroService.registrarRegular(cedula, nombre);
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
-        }
+        } ;break;
                 
-           
+            default: System.out.println("Opcion no valida...");
         }
             
     }
@@ -340,9 +345,91 @@ public class Menu {
     }
 
     private void menuTickets() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          int opcion;
+        do {
+            System.out.println("\n+===============================+");
+            System.out.println("|   GESTION DE TICKETS  ");
+            System.out.println("+===============================+");
+            System.out.println("|  1. Registrar ticket");
+            System.out.println("|  2. Listar tickets");
+            System.out.println("|  3. Buscar ticket");
+            System.out.println("|  4. Eliminar ticket");
+            System.out.println("|  0. Volver");
+            System.out.println("+===============================+");
+            System.out.print("Seleccione una opcion: ");
+            opcion = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcion) {
+                case 1:
+                   registrarTicket();
+                    break;
+                case 2:
+                    listarTickets();
+                    break;
+                case 3:
+                    buscarTicket();
+                    break;
+                case 4:
+                    eliminarTicket();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("️ Opcion no valida...");
+            }
+        } while (opcion != 0);
     }
 
+    
+    public void registrarTicket(){
+         System.out.println("\n REGISTRAR TICKET");
+        System.out.println("Numero de cedula del pasajero: ");
+        String cedula = scanner.nextLine();
+        System.out.println("numero de placa del vehiculo: ");
+        String placa = scanner.nextLine();
+        System.out.println("Lugar de salida: ");
+        String origen = scanner.nextLine();
+        System.out.println("Lugar destino: ");
+        String destino = scanner.nextLine();
+        try {
+            ticketService.venderTicket(cedula, placa,origen, destino);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+    
+    public void listarTickets(){
+          System.out.println("\n── Lista de Tickets ──");
+        List<String[]> lista = ticketService.listarTickets();
+     for (String[] t : lista) {
+    System.out.println(Arrays.toString(t));
+}
+    }
+    
+   public void buscarTicket(){
+        System.out.println("\n── Buscar Ticket ──");
+        System.out.print("Ingrese el numero del ticket: ");
+        int id = scanner.nextInt();
+        try {
+            String[] t = ticketService.buscarTicket(id);
+          //  t.imprimirDetalle();
+        } catch (IllegalArgumentException e) {
+            System.out.println(" Error: " + e.getMessage());
+        }
+    }
+
+  public void eliminarTicket(){
+        System.out.println("\n── Eliminar Ticket ──");
+        System.out.print("Ingrese el numero del ticket: ");
+        int id = scanner.nextInt();
+        try {
+            ticketService.cancelarTicket(id);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+  }  
+    
     private void MenuEstadisticas() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }

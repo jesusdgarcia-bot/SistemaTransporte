@@ -25,10 +25,10 @@ public class TicketService {
     private PasajeroDao pasajeroDao;
     private VehiculoDao vehiculoDao;
  
-    public TicketService(TicketDao ticketDao, PasajeroDao pasajeroDao, VehiculoDao vehiculoDao) {
-        this.ticketDao = ticketDao;
-        this.pasajeroDao = pasajeroDao;
-        this.vehiculoDao = vehiculoDao;
+    public TicketService() {
+        this.ticketDao = new TicketDao();
+        this.pasajeroDao = new PasajeroDao();
+        this.vehiculoDao = new VehiculoDao();
         
     }
  
