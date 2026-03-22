@@ -17,7 +17,7 @@ import java.util.List;
 
 public class VehiculoDao {
 
-    private String ruta;
+
     public VehiculoDao(){    }   
     
     private String obtenerArchivo(String tipo){
@@ -47,11 +47,46 @@ public class VehiculoDao {
             System.out.println("Error al guardar vehículo: " + e.getMessage());
         }
     }
- 
-    public void actualizarVehiculo (Vehiculo vehiculo){
-        modificarRuta(ruta);
-        modificarEstado(ruta);
+    
+    public void registrarBus(Bus vehiculo) {
+
+        try (BufferedWriter bw = new BufferedWriter(
+                new FileWriter(RutaArchivos.BUS, true))) {
+
+            bw.write(vehiculo.toString());
+            bw.newLine();
+
+        } catch (IOException e) {
+            System.out.println("Error al guardar vehículo: " + e.getMessage());
+        }
     }
+    
+    public void registrarMicrobus(Microbus vehiculo) {
+
+        try (BufferedWriter bw = new BufferedWriter(
+                new FileWriter(RutaArchivos.MICROBUS, true))) {
+
+            bw.write(vehiculo.toString());
+            bw.newLine();
+
+        } catch (IOException e) {
+            System.out.println("Error al guardar vehículo: " + e.getMessage());
+        }
+    }
+    
+    public void registrarBuseta(Buseta vehiculo) {
+
+        try (BufferedWriter bw = new BufferedWriter(
+                new FileWriter(RutaArchivos.BUSETA, true))) {
+
+            bw.write(vehiculo.toString());
+            bw.newLine();
+
+        } catch (IOException e) {
+            System.out.println("Error al guardar vehículo: " + e.getMessage());
+        }
+    }
+ 
     
     public Vehiculo buscar(String placa) {
 
@@ -156,7 +191,7 @@ public class VehiculoDao {
         }
     }
     
-    public void modificarRuta(String placa) {
+    public void modificarRuta(String placa, String ruta) {
 
         String[] archivos = {
             RutaArchivos.BUS,

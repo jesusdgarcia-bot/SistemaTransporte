@@ -26,32 +26,32 @@ public class VehiculoService {
     this.conductorDao = new ConductorDao();
   }  
   
-  public void registrar(String placa, String ruta, String tipo) {
+  public void registrar(String placa, String ruta, int tipo) {
     if(placa == null || placa.trim().isEmpty()){
       throw new IllegalArgumentException("La placa no puede estar vacia");
     }
     if(ruta == null || ruta.trim().isEmpty()){
       throw new IllegalArgumentException("La ruta no puede estar vacia");
     }
-    if(tipo == null || tipo.trim().isEmpty()){
-      throw new IllegalArgumentException("El tipo no puede estar vacio");
+    if(tipo <= 0 || tipo >3){
+      throw new IllegalArgumentException("Tipo invalido");
     }
     if(!vehiculoDao.verificarPlaca(placa)){
       throw new IllegalArgumentException("Ya existe un vehiculo con la placa: " + placa);
     }
 
     switch(tipo){
-      case "BUS":
-        Vehiculo bus = new Bus(placa, ruta);
-        vehiculoDao.registrar(bus);
+      case 1:
+        Bus bus = new Bus(placa, ruta);
+        vehiculoDao.registrarBus(bus);
         break;
-      case "MICROBUS":
-        Vehiculo microbus = new Microbus(placa, ruta);
-        vehiculoDao.registrar(microbus);
+      case 2:
+        Microbus microbus = new Microbus(placa, ruta);
+        vehiculoDao.registrarMicrobus(microbus);
         break;
-      case "BUSETA":
-        Vehiculo buseta = new Buseta(placa, ruta);
-        vehiculoDao.registrar(buseta);
+      case 3:
+        Buseta buseta = new Buseta(placa, ruta);
+        vehiculoDao.registrarBuseta(buseta);
         break;
       default:
         throw new IllegalArgumentException("Tipo de vehiculo invalido");
@@ -149,7 +149,7 @@ public class VehiculoService {
       throw new IllegalArgumentException("La ruta no puede estar vacia");
     }
 
-    vehiculoDao.modificarRuta(placa);
+    vehiculoDao.modificarRuta(placa, ruta);
   }
   
   public void asignarConductor(String placa, String idLicConductor) {

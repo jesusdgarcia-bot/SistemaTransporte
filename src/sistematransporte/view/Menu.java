@@ -8,6 +8,7 @@ import sistematransporte.model.Pasajero;
 import sistematransporte.model.Ticket;
 import sistematransporte.model.Vehiculo;
 import sistematransporte.service.ConductorService;
+import sistematransporte.service.EstadisticasService;
 import sistematransporte.service.PasajeroService;
 import sistematransporte.service.TicketService;
 import sistematransporte.service.VehiculoService;
@@ -23,6 +24,7 @@ public class Menu {
     private ConductorService conductorService;
     private PasajeroService pasajeroService;
     private TicketService ticketService;
+    private EstadisticasService estadisticasService;
 
     public Menu() {
         this.scanner = new Scanner(System.in);
@@ -30,6 +32,7 @@ public class Menu {
         this.conductorService = new ConductorService();
         this.pasajeroService = new PasajeroService();
         this.ticketService = new TicketService();
+        this.estadisticasService= new EstadisticasService();
     }
 
     public void iniciar() {
@@ -71,6 +74,17 @@ public class Menu {
             }
         } while (opcion != 0);
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     private void menuVehiculos() {
         int opcion;
@@ -115,8 +129,12 @@ public class Menu {
         String placa = scanner.nextLine();
         System.out.println("Ruta: ");
         String ruta = scanner.nextLine();
-        System.out.println("Tarifa: ");
-        String tipo = scanner.nextLine();
+        System.out.println("Tipo de vehiculo: ");
+        System.out.println("1. BUS");
+        System.out.println("2. MICROBUS");
+        System.out.println("3. BUSETA");
+        int tipo = scanner.nextInt();
+        
         try {
             vehiculoService.registrar(placa, ruta, tipo);
         } catch (IllegalArgumentException e) {
@@ -380,8 +398,7 @@ public class Menu {
             }
         } while (opcion != 0);
     }
-
-    
+   
     public void registrarTicket(){
          System.out.println("\n REGISTRAR TICKET");
         System.out.println("Numero de cedula del pasajero: ");
@@ -431,7 +448,50 @@ public class Menu {
   }  
     
     private void MenuEstadisticas() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+        int opcion;
 
+        do {
+            System.out.println("\n========================================");
+            System.out.println("        MENU DE ESTADISTICAS");
+            System.out.println("========================================");
+            System.out.println("1. Total recaudado");
+            System.out.println("2. Total de tickets vendidos");
+            System.out.println("3. Pasajeros por tipo");
+            System.out.println("4. Vehiculo con mas tickets");
+            System.out.println("5. Resumen completo");
+            System.out.println("0. Volver");
+            System.out.print("Seleccione una opcion: ");
+            opcion = scanner.nextInt();
+
+            switch (opcion) {
+                case 1:  System.out.printf("Total recaudado: $%.0f%n", estadisticasService.calcularTotal());
+                    break;
+
+                case 2:
+                    System.out.println("Total tickets vendidos: " + estadisticasService.vehiculoConMasTickets());
+                   break;
+
+                case 3:
+                    System.out.println("\nPasajeros por tipo:" + estadisticasService.contarPasajerosPorTipo());
+                  
+                    break;
+
+                case 4:
+                    System.out.println("Vehiculo con mas tickets: " + estadisticasService.vehiculoConMasTickets());
+                    break;
+
+                case 5:
+                    estadisticasService.mostrarResumenCompleto();
+                    break;
+
+                case 0:
+                    System.out.println("Volviendo...");
+                    break;
+
+                default:
+                    System.out.println("Opcion invalida");
+            }
+
+    } while (opcion != 0);
+    }
 }
