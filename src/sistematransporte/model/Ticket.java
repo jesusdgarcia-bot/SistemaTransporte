@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package sistematransporte.model;
 import sistematransporte.model.interfaces.Calculable;
 import sistematransporte.model.interfaces.Imprimible;
@@ -40,10 +37,6 @@ public class Ticket implements Calculable, Imprimible {
         return valorFinal;
     }
 
-    @Override
-    public void imprimirDetalle() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     
      @Override
     public void imprimirDetalle() {

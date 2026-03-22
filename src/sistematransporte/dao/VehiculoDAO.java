@@ -295,4 +295,12 @@ public class VehiculoDao {
       Vehiculo v = buscar(placa);
       return (v.getEstado() ? "Disponible" : "No Disponible");
     }
+
+    public Vehiculo buscarPorPlaca(String placaVehiculo) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void actualizarVehiculo(Vehiculo vehiculo) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

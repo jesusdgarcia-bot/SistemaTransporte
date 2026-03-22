@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package sistematransporte.model;
 
 import sistematransporte.model.interfaces.Imprimible;
@@ -20,6 +17,8 @@ public class Conductor extends Persona implements Imprimible {
         this.numeroLicencia = numeroLicencia;
         this.categoriaLicencia = categoriaLicencia;
     }
+
+
  
     public String getNumeroLicencia() {
         return numeroLicencia;
