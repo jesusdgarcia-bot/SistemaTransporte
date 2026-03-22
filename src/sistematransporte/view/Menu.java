@@ -259,7 +259,7 @@ public class Menu {
             System.out.print("Seleccione una opcion: ");
             opcion = scanner.nextInt();
             scanner.nextLine();
-
+ 
             switch (opcion) {
                 case 1:
                     registrarPasajero();
@@ -280,7 +280,7 @@ public class Menu {
             }
         } while (opcion != 0);
     }
-
+ 
     private void registrarPasajero() {
         int opcion;
         System.out.println("\n REGISTRAR PASAJERO");
@@ -288,35 +288,30 @@ public class Menu {
         String cedula = scanner.nextLine();
         System.out.println("Nombre: ");
         String nombre = scanner.nextLine();
+        System.out.println("Fecha de nacimiento (dd/MM/yyyy): ");
+        String fechaNacimiento = scanner.nextLine();
         System.out.println("Seleccione el tipo de pasajero: ");
-        System.out.println("1. Adulto mayor");
-        System.out.println("2. Estudiante");
-        System.out.println("3. Regular");
+        System.out.println("1. Estudiante");
+        System.out.println("2. Regular");
         opcion = scanner.nextInt();
-            scanner.nextLine();
-            
-        switch (opcion){
-            case 1:  try {
-            pasajeroService.registrarAdultoMayor(cedula, nombre);
+        scanner.nextLine();
+ 
+        try {
+            switch (opcion) {
+                case 1:
+                    pasajeroService.registrarEstudiante(cedula, nombre, fechaNacimiento);
+                    break;
+                case 2:
+                    pasajeroService.registrarRegular(cedula, nombre, fechaNacimiento);
+                    break;
+                default:
+                    System.out.println("Opcion no valida...");
+            }
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
-        }; break;
-            case 2:   try {
-            pasajeroService.registrarEstudiante(cedula, nombre);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
-        } ; break;
-            case 3: try {
-            pasajeroService.registrarRegular(cedula, nombre);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
-        } ;break;
-                
-            default: System.out.println("Opcion no valida...");
         }
-            
     }
-
+ 
     private void listarPasajeros() {
         System.out.println("\n── Lista de Pasajeros ──");
         List<Pasajero> lista = pasajeroService.listarPasajeros();
@@ -324,7 +319,7 @@ public class Menu {
             v.imprimirDetalle();
         }
     }
-
+ 
     private void buscarPasajero() {
         System.out.println("\n── Buscar Pasajero ──");
         System.out.print("Ingrese el numero de cedula: ");
@@ -336,7 +331,7 @@ public class Menu {
             System.out.println(" Error: " + e.getMessage());
         }
     }
-
+ 
     private void eliminarPasajero() {
         System.out.println("\n── Eliminar Pasajero ──");
         System.out.print("Ingrese el numero de cedula: ");
@@ -347,6 +342,7 @@ public class Menu {
             System.out.println("Error: " + e.getMessage());
         }
     }
+
 
     private void menuTickets() {
           int opcion;

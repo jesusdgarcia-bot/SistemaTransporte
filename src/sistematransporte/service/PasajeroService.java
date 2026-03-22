@@ -1,41 +1,51 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package sistematransporte.service;
-
+ 
 import sistematransporte.dao.PasajeroDao;
 import sistematransporte.model.Pasajero;
 import sistematransporte.model.PasajeroAdultoMayor;
 import sistematransporte.model.PasajeroEstudiante;
 import sistematransporte.model.PasajeroRegular;
-
+ 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-
+ 
 /**
  *
  * @author Equipo
  */
 public class PasajeroService {
-     private PasajeroDao pasajeroDao;
+    private PasajeroDao pasajeroDao;
  
-    public PasajeroService( ) {
+    public PasajeroService() {
         this.pasajeroDao = new PasajeroDao();
     }
  
     // CREATE - registrar pasajero regular
-    public boolean registrarRegular(String cedula, String nombre) {
-        return registrar(new PasajeroRegular(cedula, nombre));
+    // Si la fecha de nacimiento corresponde a 60 años o más, se registra como Adulto Mayor
+    public boolean registrarRegular(String cedula, String nombre, String fechaNacimiento) {
+        Pasajero p;
+        if (esAdultoMayor(fechaNacimiento)) {
+            p = new PasajeroAdultoMayor(cedula, nombre);
+        } else {
+            p = new PasajeroRegular(cedula, nombre);
+        }
+        p.setFechaNacimiento(fechaNacimiento);
+        return registrar(p);
     }
  
     // CREATE - registrar pasajero estudiante
-    public boolean registrarEstudiante(String cedula, String nombre) {
-        return registrar(new PasajeroEstudiante(cedula, nombre));
-    }
- 
-    // CREATE - registrar pasajero adulto mayor
-    public boolean registrarAdultoMayor(String cedula, String nombre) {
-        return registrar(new PasajeroAdultoMayor(cedula, nombre));
+    // Si la fecha de nacimiento corresponde a 60 años o más, se registra como Adulto Mayor
+    public boolean registrarEstudiante(String cedula, String nombre, String fechaNacimiento) {
+        Pasajero p;
+        if (esAdultoMayor(fechaNacimiento)) {
+            p = new PasajeroAdultoMayor(cedula, nombre);
+        } else {
+            p = new PasajeroEstudiante(cedula, nombre);
+        }
+        p.setFechaNacimiento(fechaNacimiento);
+        return registrar(p);
     }
  
     // Metodo privado que valida cedula unica antes de guardar
@@ -47,6 +57,13 @@ public class PasajeroService {
         pasajeroDao.guardarPasajero(pasajero);
         System.out.println("Pasajero registrado correctamente.");
         return true;
+    }
+ 
+    // Retorna true si la fecha de nacimiento corresponde a una persona de 60 años o más
+    private boolean esAdultoMayor(String fechaNacimiento) {
+        LocalDate fechaNac = LocalDate.parse(fechaNacimiento,
+                DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        return Period.between(fechaNac, LocalDate.now()).getYears() >= 60;
     }
  
     // READ - listar todos
@@ -92,4 +109,3 @@ public class PasajeroService {
         return ok;
     }
 }
-

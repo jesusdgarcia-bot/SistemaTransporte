@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package sistematransporte.model;
 import sistematransporte.model.interfaces.Imprimible;
 /**
@@ -10,8 +6,18 @@ import sistematransporte.model.interfaces.Imprimible;
  */
 public abstract class Pasajero extends Persona implements Imprimible {
  
+    private String fechaNacimiento;
+ 
     public Pasajero(String cedula, String nombre) {
         super(cedula, nombre);
+    }
+ 
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+ 
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
  
     // Cada subclase define su propio descuento

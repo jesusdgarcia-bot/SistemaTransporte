@@ -1,9 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package sistematransporte.dao;
-
+ 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,13 +12,11 @@ import sistematransporte.model.Pasajero;
 import sistematransporte.model.PasajeroRegular;
 import sistematransporte.model.PasajeroEstudiante;
 import sistematransporte.model.PasajeroAdultoMayor;
-
+ 
 /**
  *
  * @author Equipo
  */
-
-
 public class PasajeroDao {
     private static final String ARCHIVO = "pasajeros.txt";
     private List<Pasajero> pasajeros;
@@ -53,7 +47,7 @@ public class PasajeroDao {
         }
     }
  
-    // Formato: cedula;nombre;tipo
+    // Formato: cedula;nombre;tipo;fechaNacimiento
     // tipo puede ser: REGULAR | ESTUDIANTE | ADULTO_MAYOR
     private Pasajero parsearLinea(String linea) {
         String[] partes = linea.split(";");
@@ -63,11 +57,18 @@ public class PasajeroDao {
         String nombre = partes[1];
         String tipo   = partes[2];
  
+        Pasajero p;
         switch (tipo.toUpperCase()) {
-            case "ESTUDIANTE":   return new PasajeroEstudiante(cedula, nombre);
-            case "ADULTO_MAYOR": return new PasajeroAdultoMayor(cedula, nombre);
-            default:             return new PasajeroRegular(cedula, nombre);
+            case "ESTUDIANTE":   p = new PasajeroEstudiante(cedula, nombre); break;
+            case "ADULTO_MAYOR": p = new PasajeroAdultoMayor(cedula, nombre); break;
+            default:             p = new PasajeroRegular(cedula, nombre); break;
         }
+ 
+        if (partes.length >= 4) {
+            p.setFechaNacimiento(partes[3]);
+        }
+ 
+        return p;
     }
  
     // Determina el tipo como String para guardarlo en el archivo
@@ -80,7 +81,8 @@ public class PasajeroDao {
     private void guardarEnArchivo() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO))) {
             for (Pasajero p : pasajeros) {
-                bw.write(p.getCedula() + ";" + p.getNombre() + ";" + obtenerTipo(p));
+                String fechaNac = p.getFechaNacimiento() != null ? p.getFechaNacimiento() : "";
+                bw.write(p.getCedula() + ";" + p.getNombre() + ";" + obtenerTipo(p) + ";" + fechaNac);
                 bw.newLine();
             }
         } catch (IOException e) {
@@ -130,4 +132,3 @@ public class PasajeroDao {
         return eliminado;
     }
 }
-
