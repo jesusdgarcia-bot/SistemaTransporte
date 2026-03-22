@@ -11,4 +11,5 @@ public class RutaArchivos {
     public static final String CONDUCTORES = "datos/conductores.txt";
     public static final String PASAJEROS = "datos/pasajeros.txt";
     public static final String TICKETS = "datos/tickets.txt";
+    public static final String RUTA ="datos/rutas.txt";
 }

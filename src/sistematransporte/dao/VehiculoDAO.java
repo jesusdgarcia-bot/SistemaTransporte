@@ -10,15 +10,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author jssdv
- */
+public class VehiculoDAO {
 
-public class VehiculoDao {
-
-    private String ruta;
-    public VehiculoDao(){    }   
+    public VehiculoDAO(){ }   
     
     private String obtenerArchivo(String tipo){
         switch(tipo){
@@ -47,11 +41,46 @@ public class VehiculoDao {
             System.out.println("Error al guardar vehículo: " + e.getMessage());
         }
     }
- 
-    public void actualizarVehiculo (Vehiculo vehiculo){
-        modificarRuta(ruta);
-        modificarEstado(ruta);
+    
+    public void registrarBus(Bus vehiculo) {
+
+        try (BufferedWriter bw = new BufferedWriter(
+                new FileWriter(RutaArchivos.BUS, true))) {
+
+            bw.write(vehiculo.toString());
+            bw.newLine();
+
+        } catch (IOException e) {
+            System.out.println("Error al guardar vehículo: " + e.getMessage());
+        }
     }
+    
+    public void registrarMicrobus(Microbus vehiculo) {
+
+        try (BufferedWriter bw = new BufferedWriter(
+                new FileWriter(RutaArchivos.MICROBUS, true))) {
+
+            bw.write(vehiculo.toString());
+            bw.newLine();
+
+        } catch (IOException e) {
+            System.out.println("Error al guardar vehículo: " + e.getMessage());
+        }
+    }
+    
+    public void registrarBuseta(Buseta vehiculo) {
+
+        try (BufferedWriter bw = new BufferedWriter(
+                new FileWriter(RutaArchivos.BUSETA, true))) {
+
+            bw.write(vehiculo.toString());
+            bw.newLine();
+
+        } catch (IOException e) {
+            System.out.println("Error al guardar vehículo: " + e.getMessage());
+        }
+    }
+ 
     
     public Vehiculo buscar(String placa) {
 
@@ -156,7 +185,7 @@ public class VehiculoDao {
         }
     }
     
-    public void modificarRuta(String placa) {
+    public void modificarRuta(String placa, String codRuta) {
 
         String[] archivos = {
             RutaArchivos.BUS,
@@ -174,7 +203,7 @@ public class VehiculoDao {
                 for (Vehiculo v : lista) {
 
                     if (v.getPlaca().equalsIgnoreCase(placa)) {
-                        v.setRuta(ruta);
+                        v.setCodRuta(codRuta);
                     }
 
                     bw.write(v.toString());
@@ -296,15 +325,8 @@ public class VehiculoDao {
         }
     }
     
-    
-  
     public String verEstado(String placa) {
       Vehiculo v = buscar(placa);
       return (v.getEstado() ? "Disponible" : "No Disponible");
     }
-    
 }
-
-   
-
-    

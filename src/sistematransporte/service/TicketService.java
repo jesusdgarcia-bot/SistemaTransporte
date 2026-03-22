@@ -6,7 +6,7 @@ package sistematransporte.service;
 
 import sistematransporte.dao.TicketDao;
 import sistematransporte.dao.PasajeroDao;
-import sistematransporte.dao.VehiculoDao;
+import sistematransporte.dao.VehiculoDAO;
 import sistematransporte.model.Pasajero;
 import sistematransporte.model.Ticket;
 import sistematransporte.model.Vehiculo;
@@ -23,9 +23,9 @@ import java.util.List;
 public class TicketService {
     private TicketDao ticketDao;
     private PasajeroDao pasajeroDao;
-    private VehiculoDao vehiculoDao;
+    private VehiculoDAO vehiculoDao;
  
-    public TicketService(TicketDao ticketDao, PasajeroDao pasajeroDao, VehiculoDao vehiculoDao) {
+    public TicketService(TicketDao ticketDao, PasajeroDao pasajeroDao, VehiculoDAO vehiculoDao) {
         this.ticketDao = ticketDao;
         this.pasajeroDao = pasajeroDao;
         this.vehiculoDao = vehiculoDao;

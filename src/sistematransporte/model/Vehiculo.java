@@ -1,12 +1,9 @@
 package sistematransporte.model;
 import sistematransporte.model.interfaces.*;
-/**
- *
- * @author jssdv
- */
+
 public abstract class Vehiculo implements Imprimible, Calculable {
   private String placa;
-  private String ruta;
+  private String codRuta;
   private double tarifa;
   private int capacidadMaxima; 
   private int pasajerosActuales;
@@ -14,13 +11,12 @@ public abstract class Vehiculo implements Imprimible, Calculable {
   private String idLicenciaConductor;
   private int ticketsVendidos;
   
-  
   public Vehiculo() {
   }
 
-  public Vehiculo(String placa, String ruta, double tarifa, int capacidadMaxima,int pasajerosActuales, Boolean estado, String idLicenciaConductor, int ticketsVendidos) {
+  public Vehiculo(String placa, String codRuta, double tarifa, int capacidadMaxima, int pasajerosActuales, Boolean estado, String idLicenciaConductor, int ticketsVendidos) {
     this.placa = placa;
-    this.ruta = ruta;
+    this.codRuta = codRuta;
     this.tarifa = tarifa;
     this.capacidadMaxima = capacidadMaxima;
     this.pasajerosActuales = pasajerosActuales;
@@ -35,8 +31,8 @@ public abstract class Vehiculo implements Imprimible, Calculable {
     return placa;
   }
 
-  public String getRuta() {
-    return ruta;
+  public String getCodRuta() {
+    return codRuta;
   }
 
   public double getTarifa() {
@@ -63,13 +59,12 @@ public abstract class Vehiculo implements Imprimible, Calculable {
     return ticketsVendidos;
   }
 
-
   public void setPlaca(String placa) {
     this.placa = placa;
   }
 
-  public void setRuta(String ruta) {
-    this.ruta = ruta;
+  public void setCodRuta(String codRuta) {
+    this.codRuta = codRuta;
   }
 
   public void setTarifa(double tarifa) {
@@ -106,47 +101,38 @@ public abstract class Vehiculo implements Imprimible, Calculable {
     return true;
   }
   
-  
   @Override
   public double calcularTotal(){
     return ticketsVendidos * tarifa;
   }
 
-
   @Override
   public String toString() {
-    return placa + ";" + ruta + ";" + tarifa + ";" + capacidadMaxima + ";" +
-           pasajerosActuales + ";" + estado + ";" + idLicenciaConductor + ";" + ticketsVendidos;
+    return placa + ";" + codRuta + ";" + tarifa + ";" + capacidadMaxima + ";" + pasajerosActuales + ";" + estado + ";" + idLicenciaConductor + ";" + ticketsVendidos;
   }
-
 
   public void fromString(String data) {
     String[] partes = data.split(";");
 
     this.placa = partes[0];
-    this.ruta = partes[1];
+    this.codRuta = partes[1];
     this.tarifa = Double.parseDouble(partes[2]);
     this.capacidadMaxima = Integer.parseInt(partes[3]);
     this.pasajerosActuales = Integer.parseInt(partes[4]);
     this.estado = Boolean.parseBoolean(partes[5]);
-    this.idLicenciaConductor = "null".equals(partes[6]) ? null : partes[6];
+    this.idLicenciaConductor = partes[6];
     this.ticketsVendidos = Integer.parseInt(partes[7]);
   }
-  
   
   @Override
   public void imprimirDetalle() {
     System.out.println("| Tipo De Vehiculo: " + getTipo() +
                        "| Placa: " + getPlaca() +
-                       "| Ruta: " + getRuta() +
+                       "| Codigo Ruta: " + (getCodRuta() != null ? getCodRuta() : "No Hay ruta Asignada") +
                        "| Tarifa: " + getTarifa() +
                        "| Capcacidad Maxima: " + getCapacidadMaxima() +
                        "| Pasajeros Actuales: " + getPasajerosActuales() +
                        "| Estado: " + (getEstado() ? "Disponible"  : "No Disponible") + 
                        "| Id Licencia Conductor: " + (getIdLicenciaConductor() != null ? getIdLicenciaConductor() : "No Hay Conductor Asignado"));
   }
-
-    public boolean tieneCupos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

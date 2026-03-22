@@ -13,11 +13,13 @@ public class Menu {
     private Scanner scanner;
     private VehiculoService vehiculoService;
     private ConductorService conductorService;
+    private MenuRuta menuRuta;
     
     public Menu(){
         this.scanner = new Scanner(System.in);
         this.vehiculoService = new VehiculoService();
         this.conductorService = new ConductorService();
+        this.menuRuta = new MenuRuta();
     }
     
     public void iniciar(){
@@ -31,6 +33,7 @@ public class Menu {
             System.out.println("| 3) Gestion de pasajeros");
             System.out.println("| 4) Gestion de tickets");
             System.out.println("| 5) Gestion de Estadisticas");
+            System.out.println("| 6) Gestion de rutas");
             System.out.println("+===============================+");
             System.out.println("Seleccione una opcion: ");
             opcion = scanner.nextInt();
@@ -42,6 +45,7 @@ public class Menu {
                 case 3: menuPasajeros(); break;
                 case 4: menuTickets(); break;
                 case 5: MenuEstadisticas(); break;
+                case 6: menuRuta.menuPrincipal(); break;
                 case 0: System.out.println(" Saliendo del sistema... ");
                 default: System.out.println(" Opcion no valida... ");
             }
