@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package sistematransporte.dao;
 
 import sistematransporte.model.Ticket;
@@ -56,7 +52,6 @@ public class TicketDao {
     // CREATE - guarda un ticket ya calculado
     public void guardarTicket(Ticket ticket) {
         String cedulaPasajero = ticket.getPasajero().getCedula();
-        // Recordarle al lider que cuando haga el Merge 1: cambiar a ((Vehiculo) ticket.getVehiculo()).getPlaca()
         String placaVehiculo = ticket.getVehiculo() != null ? ticket.getVehiculo().toString() : "SIN_PLACA";
  
         String[] linea = {

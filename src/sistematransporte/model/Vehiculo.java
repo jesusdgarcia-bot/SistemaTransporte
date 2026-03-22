@@ -157,4 +157,6 @@ public abstract class Vehiculo implements Imprimible, Calculable {
     public void registrarVenta() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+  
+ 
 }

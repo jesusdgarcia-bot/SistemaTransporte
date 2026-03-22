@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package sistematransporte.service;
 
 import sistematransporte.dao.ConductorDao;
@@ -20,6 +16,10 @@ public class ConductorService {
  
     public ConductorService(ConductorDao conductorDao) {
         this.conductorDao = conductorDao;
+    }
+
+    public ConductorService() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
  
     // CREATE - registrar un nuevo conductor

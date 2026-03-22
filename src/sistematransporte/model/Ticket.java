@@ -1,4 +1,8 @@
 
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package sistematransporte.model;
 import sistematransporte.model.interfaces.Calculable;
 import sistematransporte.model.interfaces.Imprimible;
@@ -34,6 +38,8 @@ public class Ticket implements Calculable, Imprimible {
     @Override
     public double calcularTotal() {
         valorFinal = vehiculo.getTarifaBase() * (1 - pasajero.calcularDescuento());
+
+        valorFinal = vehiculo.getTarifa() * (1 - pasajero.calcularDescuento());
         return valorFinal;
     }
 

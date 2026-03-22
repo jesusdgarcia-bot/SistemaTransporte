@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package sistematransporte.service;
 
 import sistematransporte.dao.TicketDao;
@@ -31,6 +27,10 @@ public class TicketService {
         this.vehiculoDao = vehiculoDao;
         
     }
+
+    public TicketService() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
  
 
     public boolean venderTicket(String cedulaPasajero, String placaVehiculo,
@@ -44,7 +44,7 @@ public class TicketService {
         }
  
         
-        Vehiculo vehiculo = vehiculoDao.buscarPorPlaca(placaVehiculo);
+        Vehiculo vehiculo = vehiculoDao.buscar(placaVehiculo);
         if (vehiculo == null) {
             System.out.println("Vehiculo no encontrado: " + placaVehiculo);
             return false;
@@ -58,7 +58,7 @@ public class TicketService {
         String fecha = LocalDate.now().toString();
         Ticket ticket = new Ticket(nuevoId, pasajero, vehiculo, fecha, origen, destino);
         
-        vehiculo.registrarVenta();
+        vehiculo.venderTicket();
         vehiculoDao.actualizarVehiculo(vehiculo);
         ticketDao.guardarTicket(ticket);
         System.out.println("Ticket vendido! ID: " + nuevoId + " | Valor: $" + ticket.getValorFinal());
@@ -109,7 +109,7 @@ public class TicketService {
  
         
         
-        Vehiculo vehiculo = vehiculoDao.buscarPorPlaca(raw[2]);
+        Vehiculo vehiculo = vehiculoDao.buscar(raw[2]);
         if (vehiculo != null) {
             int actuales = vehiculo.getPasajerosActuales();
             if (actuales > 0) vehiculo.setPasajerosActuales(actuales - 1);

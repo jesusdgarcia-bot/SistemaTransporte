@@ -16,7 +16,8 @@ import java.util.List;
  */
 
 public class VehiculoDao {
-    public VehiculoDao(){    }   
+
+ 
     
     private String obtenerArchivo(String tipo){
         switch(tipo){
@@ -27,7 +28,7 @@ public class VehiculoDao {
             case "BUSETA":
                 return RutaArchivos.BUSETA;
             default:
-                throw new IllegalArgumentException("Tipo de vehículo inválido");
+                throw new IllegalArgumentException("Tipo de vehículo invalido");
         }
     }
     
@@ -45,6 +46,46 @@ public class VehiculoDao {
             System.out.println("Error al guardar vehículo: " + e.getMessage());
         }
     }
+    
+    public void registrarBus(Bus vehiculo) {
+
+        try (BufferedWriter bw = new BufferedWriter(
+                new FileWriter(RutaArchivos.BUS, true))) {
+
+            bw.write(vehiculo.toString());
+            bw.newLine();
+
+        } catch (IOException e) {
+            System.out.println("Error al guardar vehículo: " + e.getMessage());
+        }
+    }
+    
+    public void registrarMicrobus(Microbus vehiculo) {
+
+        try (BufferedWriter bw = new BufferedWriter(
+                new FileWriter(RutaArchivos.MICROBUS, true))) {
+
+            bw.write(vehiculo.toString());
+            bw.newLine();
+
+        } catch (IOException e) {
+            System.out.println("Error al guardar vehículo: " + e.getMessage());
+        }
+    }
+    
+    public void registrarBuseta(Buseta vehiculo) {
+
+        try (BufferedWriter bw = new BufferedWriter(
+                new FileWriter(RutaArchivos.BUSETA, true))) {
+
+            bw.write(vehiculo.toString());
+            bw.newLine();
+
+        } catch (IOException e) {
+            System.out.println("Error al guardar vehículo: " + e.getMessage());
+        }
+    }
+ 
     
     public Vehiculo buscar(String placa) {
 
@@ -76,7 +117,7 @@ public class VehiculoDao {
                 }
 
             } catch (IOException e) {
-                System.out.println("Error al buscar vehículo: " + e.getMessage());
+                System.out.println("Error al buscar vehiculo: " + e.getMessage());
             }
         }
 
@@ -113,7 +154,7 @@ public class VehiculoDao {
                 }
 
             } catch (IOException e) {
-                System.out.println("Error al listar vehículos: " + e.getMessage());
+                System.out.println("Error al listar vehiculos: " + e.getMessage());
             }
         }
 
@@ -144,7 +185,7 @@ public class VehiculoDao {
                 }
 
             } catch (IOException e) {
-                System.out.println("Error al eliminar vehículo: " + e.getMessage());
+                System.out.println("Error al eliminar vehiculo: " + e.getMessage());
             }
         }
     }
@@ -285,7 +326,7 @@ public class VehiculoDao {
             case 19:
                 return new Buseta();
             default:
-                throw new IllegalArgumentException("Tipo de vehículo inválido");
+                throw new IllegalArgumentException("Tipo de vehiculo invalido");
         }
     }
     
@@ -303,4 +344,9 @@ public class VehiculoDao {
     public void actualizarVehiculo(Vehiculo vehiculo) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
 }
+
+   
+
+    

@@ -13,7 +13,7 @@
             <file>file:/C:/Users/sahis/SistemaTransporte/src/sistematransporte/model/Ticket.java</file>
             <file>file:/C:/Users/sahis/SistemaTransporte/src/sistematransporte/model/interfaces/Calculable.java</file>
             <file>file:/C:/Users/sahis/SistemaTransporte/src/sistematransporte/model/Vehiculo.java</file>
-            <file>file:/C:/Users/sahis/SistemaTransporte/src/sistematransporte/dao/VehiculoDao.java</file>
+            <file>file:/C:/Users/sahis/SistemaTransporte/src/sistematransporte/dao/VehiculoDAO.java</file>
             <file>file:/C:/Users/sahis/SistemaTransporte/src/sistematransporte/dao/PasajeroDao.java</file>
             <file>file:/C:/Users/sahis/SistemaTransporte/src/sistematransporte/dao/TicketDao.java</file>
             <file>file:/C:/Users/sahis/SistemaTransporte/src/sistematransporte/service/ConductorService.java</file>
@@ -22,6 +22,10 @@
             <file>file:/C:/Users/sahis/SistemaTransporte/src/sistematransporte/service/EstadisticasService.java</file>
             <file>file:/C:/Users/sahis/SistemaTransporte/src/sistematransporte/service/VehiculoService.java</file>
             <file>file:/C:/Users/sahis/SistemaTransporte/src/sistematransporte/SistemaTransporte.java</file>
+            <file>file:/C:/Users/sahis/SistemaTransporte/src/sistematransporte/util/RutaArchivos.java</file>
+            <file>file:/C:/Users/sahis/SistemaTransporte/src/sistematransporte/model/Bus.java</file>
+            <file>file:/C:/Users/sahis/SistemaTransporte/src/sistematransporte/model/Buseta.java</file>
+            <file>file:/C:/Users/sahis/SistemaTransporte/src/sistematransporte/model/Microbus.java</file>
         </group>
     </open-files>
 </project-private>

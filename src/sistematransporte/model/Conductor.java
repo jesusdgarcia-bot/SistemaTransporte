@@ -19,7 +19,6 @@ public class Conductor extends Persona implements Imprimible {
     }
 
 
- 
     public String getNumeroLicencia() {
         return numeroLicencia;
     }
