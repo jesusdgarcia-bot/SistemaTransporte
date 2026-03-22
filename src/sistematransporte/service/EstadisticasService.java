@@ -25,9 +25,9 @@ public class EstadisticasService {
 private TicketDao ticketDao;
 private PasajeroDao pasajeroDao;
  
-    public EstadisticasService(TicketDao ticketDao, PasajeroDao pasajeroDao) {
-        this.ticketDao = ticketDao;
-        this.pasajeroDao = pasajeroDao;
+    public EstadisticasService() {
+        this.ticketDao = new TicketDao();
+        this.pasajeroDao = new PasajeroDao();
     }
  
     

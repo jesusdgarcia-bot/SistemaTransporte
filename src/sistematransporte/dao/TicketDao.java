@@ -19,7 +19,7 @@ public class TicketDao {
     private static final String ARCHIVO = "tickets.txt";
  
     // Guarda los tickets como lineas de texto plano en memoria
-    private List<String[]> ticketsRaw;
+    private final List<String[]> ticketsRaw;
  
     public TicketDao() {
         ticketsRaw = new ArrayList<>();

@@ -25,11 +25,11 @@ public class TicketService {
     private PasajeroDao pasajeroDao;
     private VehiculoDAO vehiculoDao;
  
-    public TicketService(TicketDao ticketDao, PasajeroDao pasajeroDao, VehiculoDAO vehiculoDao) {
-        this.ticketDao = ticketDao;
-        this.pasajeroDao = pasajeroDao;
-        this.vehiculoDao = vehiculoDao;
-        
+    public TicketService() {
+        this.ticketDao = new TicketDao();
+        this.pasajeroDao = new PasajeroDao();
+        this.vehiculoDao = new VehiculoDAO();
+
     }
  
 
@@ -49,7 +49,10 @@ public class TicketService {
             System.out.println("Vehiculo no encontrado: " + placaVehiculo);
             return false;
         }
-        if (!vehiculo.tieneCupos()) {
+        
+        Vehiculo v = vehiculoDao.buscar(placaVehiculo);
+        
+        if (!v.venderTicket()) {
             System.out.println("El vehiculo " + placaVehiculo + " no tiene cupos disponibles.");
             return false;
         }
@@ -59,7 +62,6 @@ public class TicketService {
         Ticket ticket = new Ticket(nuevoId, pasajero, vehiculo, fecha, origen, destino);
         
         vehiculo.venderTicket();
-        vehiculoDao.actualizarVehiculo(vehiculo);
         ticketDao.guardarTicket(ticket);
         System.out.println("Ticket vendido! ID: " + nuevoId + " | Valor: $" + ticket.getValorFinal());
         return true;
@@ -107,13 +109,10 @@ public class TicketService {
             return false;
         }
  
-        
-        
         Vehiculo vehiculo = vehiculoDao.buscar(raw[2]);
         if (vehiculo != null) {
             int actuales = vehiculo.getPasajerosActuales();
             if (actuales > 0) vehiculo.setPasajerosActuales(actuales - 1);
-            vehiculoDao.actualizarVehiculo(vehiculo);
         }
         
  
