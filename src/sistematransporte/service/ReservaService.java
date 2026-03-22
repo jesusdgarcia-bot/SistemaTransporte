@@ -14,24 +14,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 
-/**
- * Logica de negocio para el modulo de reservas.
- *
- * Reglas implementadas:
- * 1. Un vehiculo no puede tener mas reservas activas que su capacidad
- *    (contando tickets vendidos + reservas activas).
- * 2. Una reserva vence si han pasado mas de 24 horas desde su creacion.
- * 3. Un pasajero no puede tener mas de una reserva activa para el mismo
- *    vehiculo en la misma fecha de viaje.
- * 4. Al convertir una reserva en ticket se aplican descuentos y recargo festivo.
- */
 public class ReservaService {
 
     private static final DateTimeFormatter FORMATO_FECHA =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    // Lista de festivos colombianos MM-DD (misma del TicketService)
     private static final List<String> FESTIVOS = Arrays.asList(
         "01-01", "01-06", "03-24", "04-17", "04-18",
         "05-01", "06-02", "06-23", "07-20", "08-07",
@@ -50,7 +39,6 @@ public class ReservaService {
         this.ticketDao   = new TicketDao();
     }
 
-    // Verifica si una fecha es festivo
     private boolean esFestivo(LocalDate fecha) {
         String mesDia = String.format("%02d-%02d", fecha.getMonthValue(), fecha.getDayOfMonth());
         return FESTIVOS.contains(mesDia);
@@ -61,7 +49,6 @@ public class ReservaService {
      */
     public boolean crearReserva(String cedulaPasajero, String placaVehiculo, String fechaViaje) {
 
-        // Buscar pasajero y vehiculo
         Pasajero pasajero = pasajeroDao.buscarPorCedula(cedulaPasajero);
         if (pasajero == null) {
             System.out.println("Pasajero no encontrado: " + cedulaPasajero);
@@ -74,9 +61,11 @@ public class ReservaService {
             return false;
         }
 
-        // REGLA 3 - un pasajero no puede tener dos reservas activas
-        // para el mismo vehiculo en la misma fecha de viaje
-        for (Reserva r : reservaDao.listarActivas()) {
+        // REGLA 3 - no puede haber dos reservas activas del mismo pasajero,
+        // mismo vehiculo y misma fecha de viaje
+        List<Reserva> activas = reservaDao.listarActivas();
+        for (int i = 0; i < activas.size(); i++) {
+            Reserva r = activas.get(i);
             if (r.getPasajero().getCedula().equalsIgnoreCase(cedulaPasajero)
                     && r.getVehiculo().getPlaca().equalsIgnoreCase(placaVehiculo)
                     && r.getFechaViaje().equals(fechaViaje)) {
@@ -85,8 +74,7 @@ public class ReservaService {
             }
         }
 
-        // REGLA 1 - capacidad: tickets vendidos + reservas activas no puede
-        // superar la capacidad maxima del vehiculo
+        // REGLA 1 - tickets vendidos + reservas activas no supera la capacidad
         int reservasActivas = contarReservasActivasPorVehiculo(placaVehiculo);
         int ocupacion = vehiculo.getPasajerosActuales() + reservasActivas;
         if (ocupacion >= vehiculo.getCapacidadMaxima()) {
@@ -94,10 +82,8 @@ public class ReservaService {
             return false;
         }
 
-        // Crear la reserva
         int nuevoCodigo = reservaDao.generarNuevoCodigo();
         String fechaCreacion = LocalDateTime.now().format(FORMATO_FECHA);
-
         Reserva reserva = new Reserva(nuevoCodigo, pasajero, vehiculo, fechaCreacion, fechaViaje);
         reservaDao.guardarReserva(reserva);
 
@@ -106,7 +92,7 @@ public class ReservaService {
     }
 
     /**
-     * Cancela una reserva por su codigo, liberando el cupo.
+     * Cancela una reserva por su codigo.
      */
     public boolean cancelarReserva(int codigo) {
         Reserva reserva = reservaDao.buscarPorCodigo(codigo);
@@ -118,9 +104,8 @@ public class ReservaService {
             System.out.println("La reserva no esta activa, no se puede cancelar.");
             return false;
         }
-
         reserva.setEstado(Reserva.CANCELADA);
-        reservaDao.actualizarReserva(reserva);
+        reservaDao.actualizarEstado(codigo, Reserva.CANCELADA);
         System.out.println("Reserva cancelada correctamente.");
         return true;
     }
@@ -140,10 +125,7 @@ public class ReservaService {
     }
 
     /**
-     * Convierte una reserva activa en ticket, aplicando:
-     * - Descuento por tipo de pasajero
-     * - Recargo del 20% si la fecha de compra es festivo
-     * - Regla de maximo 3 tickets por dia (del TicketService)
+     * Convierte una reserva activa en ticket aplicando descuentos y recargo festivo.
      */
     public boolean convertirEnTicket(int codigo, String origen, String destino) {
         Reserva reserva = reservaDao.buscarPorCodigo(codigo);
@@ -156,10 +138,9 @@ public class ReservaService {
             return false;
         }
 
-        // REGLA 2 - verificar que no haya vencido (mas de 24 horas)
+        // REGLA 2 - verificar vencimiento (mas de 24 horas)
         if (haVencido(reserva)) {
-            reserva.setEstado(Reserva.CANCELADA);
-            reservaDao.actualizarReserva(reserva);
+            reservaDao.actualizarEstado(codigo, Reserva.CANCELADA);
             System.out.println("La reserva ha vencido (mas de 24 horas). Se cancelo automaticamente.");
             return false;
         }
@@ -176,7 +157,7 @@ public class ReservaService {
             return false;
         }
 
-        // Aplicar recargo festivo si aplica
+        // Recargo festivo si aplica
         boolean festivo = esFestivo(hoy);
         if (festivo) System.out.println("Aviso: hoy es festivo, se aplica recargo del 20%.");
 
@@ -184,14 +165,12 @@ public class ReservaService {
         int nuevoId = ticketDao.generarNuevoId();
         Ticket ticket = new Ticket(nuevoId, pasajero, vehiculo, fechaHoy, origen, destino, festivo);
 
-        // Registrar venta en vehiculo y guardar ticket
+        // Registrar la venta en el vehiculo
         vehiculo.venderTicket();
-        vehiculoDao.actualizarVehiculo(vehiculo);
         ticketDao.guardarTicket(ticket);
 
         // Cambiar estado de la reserva a CONVERTIDA
-        reserva.setEstado(Reserva.CONVERTIDA);
-        reservaDao.actualizarReserva(reserva);
+        reservaDao.actualizarEstado(codigo, Reserva.CONVERTIDA);
 
         System.out.println("Reserva convertida en ticket exitosamente!");
         System.out.println("ID Ticket: " + nuevoId + " | Valor: $" + String.format("%.0f", ticket.getValorFinal()));
@@ -199,16 +178,16 @@ public class ReservaService {
     }
 
     /**
-     * Verifica todas las reservas activas y cancela las que llevan
-     * mas de 24 horas sin ser convertidas.
-     * Retorna cuantas fueron canceladas.
+     * Verifica todas las reservas activas y cancela las vencidas (mas de 24h).
+     * Informa cuantas fueron canceladas.
      */
     public int verificarReservasVencidas() {
         int canceladas = 0;
-        for (Reserva r : reservaDao.listarActivas()) {
+        List<Reserva> activas = reservaDao.listarActivas();
+        for (int i = 0; i < activas.size(); i++) {
+            Reserva r = activas.get(i);
             if (haVencido(r)) {
-                r.setEstado(Reserva.CANCELADA);
-                reservaDao.actualizarReserva(r);
+                reservaDao.actualizarEstado(r.getCodigo(), Reserva.CANCELADA);
                 canceladas++;
             }
         }
@@ -216,9 +195,7 @@ public class ReservaService {
         return canceladas;
     }
 
-    /**
-     * Verifica si una reserva ha superado las 24 horas desde su creacion.
-     */
+    // Verifica si una reserva supero las 24 horas desde su creacion
     private boolean haVencido(Reserva r) {
         try {
             LocalDateTime creacion = LocalDateTime.parse(r.getFechaCreacion(), FORMATO_FECHA);
@@ -228,13 +205,12 @@ public class ReservaService {
         }
     }
 
-    /**
-     * Cuenta cuantas reservas activas tiene un vehiculo en este momento.
-     */
+    // Cuenta cuantas reservas activas tiene un vehiculo
     private int contarReservasActivasPorVehiculo(String placa) {
         int contador = 0;
-        for (Reserva r : reservaDao.listarActivas()) {
-            if (r.getVehiculo().getPlaca().equalsIgnoreCase(placa)) {
+        List<Reserva> activas = reservaDao.listarActivas();
+        for (int i = 0; i < activas.size(); i++) {
+            if (activas.get(i).getVehiculo().getPlaca().equalsIgnoreCase(placa)) {
                 contador++;
             }
         }
