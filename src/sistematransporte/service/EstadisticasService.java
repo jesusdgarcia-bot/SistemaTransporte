@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package sistematransporte.service;
 
 import sistematransporte.dao.PasajeroDao;
@@ -12,9 +9,7 @@ import sistematransporte.model.PasajeroAdultoMayor;
 import sistematransporte.model.PasajeroEstudiante;
 import sistematransporte.model.PasajeroRegular;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -30,7 +25,7 @@ private PasajeroDao pasajeroDao;
         this.pasajeroDao = pasajeroDao;
     }
  
-    
+    // Suma el valorFinal de todos los tickets
     public double calcularTotal() {
         double total = 0;
         for (String[] t : ticketDao.listarTodosRaw()) {
@@ -41,65 +36,64 @@ private PasajeroDao pasajeroDao;
         }
         return total;
     }
- 
-    
-    public Map<String, Integer> contarPasajerosPorTipo() {
-        Map<String, Integer> conteo = new HashMap<>();
-        conteo.put("REGULAR", 0);
-        conteo.put("ESTUDIANTE", 0);
-        conteo.put("ADULTO_MAYOR", 0);
- 
+
+    // Retorna el total de tickets vendidos
+    public int contarTotalTickets() {
+        return ticketDao.listarTodosRaw().size();
+    }
+
+    // Cuenta pasajeros de un tipo especifico: REGULAR, ESTUDIANTE, ADULTO_MAYOR
+    public int contarPorTipo(String tipo) {
+        int contador = 0;
         for (Pasajero p : pasajeroDao.listarTodos()) {
-            if (p instanceof PasajeroEstudiante) {
-                conteo.put("ESTUDIANTE", conteo.get("ESTUDIANTE") + 1);
-            } else if (p instanceof PasajeroAdultoMayor) {
-                conteo.put("ADULTO_MAYOR", conteo.get("ADULTO_MAYOR") + 1);
-            } else {
-                conteo.put("REGULAR", conteo.get("REGULAR") + 1);
+            switch (tipo.toUpperCase()) {
+                case "ESTUDIANTE":
+                    if (p instanceof PasajeroEstudiante) contador++;
+                    break;
+                case "ADULTO_MAYOR":
+                    if (p instanceof PasajeroAdultoMayor) contador++;
+                    break;
+                case "REGULAR":
+                    if (p instanceof PasajeroRegular) contador++;
+                    break;
             }
         }
-        return conteo;
+        return contador;
     }
  
-   
+    // Retorna la placa del vehiculo con mas tickets vendidos
     public String vehiculoConMasTickets() {
-        Map<String, Integer> conteo = new HashMap<>();
- 
-        for (String[] t : ticketDao.listarTodosRaw()) {
-            String placa = t[2]; // posicion 2 = placaVehiculo
-            conteo.put(placa, conteo.getOrDefault(placa, 0) + 1);
-        }
- 
+        List<String[]> lista = ticketDao.listarTodosRaw();
+
+        if (lista.isEmpty()) return "Sin datos";
+
         String mejorPlaca = "Sin datos";
-        int maxTickets = 0;
- 
-        for (Map.Entry<String, Integer> entry : conteo.entrySet()) {
-            if (entry.getValue() > maxTickets) {
-                maxTickets = entry.getValue();
-                mejorPlaca = entry.getKey();
+        int maxConteo = 0;
+
+        for (String[] ticket : lista) {
+            String placaActual = ticket[2];
+            int conteo = 0;
+            for (String[] t : lista) {
+                if (t[2].equalsIgnoreCase(placaActual)) conteo++;
+            }
+            if (conteo > maxConteo) {
+                maxConteo = conteo;
+                mejorPlaca = placaActual;
             }
         }
         return mejorPlaca;
     }
  
- 
     public void mostrarResumenCompleto() {
         System.out.println("========================================");
         System.out.println("       RESUMEN ESTADISTICAS TRANSCESAR  ");
         System.out.println("========================================");
- 
-        double totalRecaudado = calcularTotal();
-        System.out.printf("Total recaudado:        $%.0f%n", totalRecaudado);
- 
-        int totalTickets = ticketDao.listarTodosRaw().size();
-        System.out.println("Total tickets vendidos: " + totalTickets);
- 
+        System.out.printf("Total recaudado:        $%.0f%n", calcularTotal());
+        System.out.println("Total tickets vendidos: " + contarTotalTickets());
         System.out.println("\nPasajeros por tipo:");
-        Map<String, Integer> porTipo = contarPasajerosPorTipo();
-        System.out.println("  Regular:      " + porTipo.get("REGULAR"));
-        System.out.println("  Estudiante:   " + porTipo.get("ESTUDIANTE"));
-        System.out.println("  Adulto Mayor: " + porTipo.get("ADULTO_MAYOR"));
- 
+        System.out.println("  Regular:      " + contarPorTipo("REGULAR"));
+        System.out.println("  Estudiante:   " + contarPorTipo("ESTUDIANTE"));
+        System.out.println("  Adulto Mayor: " + contarPorTipo("ADULTO_MAYOR"));
         System.out.println("\nVehiculo con mas ventas: " + vehiculoConMasTickets());
         System.out.println("========================================");
     }
