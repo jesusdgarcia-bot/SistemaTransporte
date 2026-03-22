@@ -53,11 +53,10 @@ public class TicketDao {
         }
     }
  
-    // CREATE - guarda un ticket ya calculado
     public void guardarTicket(Ticket ticket) {
         String cedulaPasajero = ticket.getPasajero().getCedula();
-        String placaVehiculo = ticket.getVehiculo() != null ? ticket.getVehiculo().toString() : "SIN_PLACA";
- 
+        String placaVehiculo = ticket.getVehiculo() != null ? ticket.getVehiculo().getPlaca() : "SIN_PLACA";
+
         String[] linea = {
             String.valueOf(ticket.getId()),
             cedulaPasajero,
@@ -65,14 +64,27 @@ public class TicketDao {
             ticket.getFechaCompra(),
             ticket.getOrigen(),
             ticket.getDestino(),
-            String.valueOf(ticket.getValorFinal())
+            String.valueOf(ticket.getValorFinal()),
+            String.valueOf(ticket.isEsFestivo())
         };
         ticketsRaw.add(linea);
         guardarEnArchivo();
     }
+
+    // READ - cuenta cuantos tickets tiene un pasajero en una fecha especifica
+    // fecha formato yyyy-MM-dd
+    public int contarPorPasajeroYFecha(String cedula, String fecha) {
+        int contador = 0;
+        for (String[] t : ticketsRaw) {
+            if (t[1].equalsIgnoreCase(cedula) && t[3].equals(fecha)) {
+                contador++;
+            }
+        }
+        return contador;
+    }
  
     // READ - retorna todos los tickets como arreglos de Strings
-    // [id, cedulaPasajero, placaVehiculo, fechaCompra, origen, destino, valorFinal]
+    // con id, cedulaPasajero, placaVehiculo, fechaCompra, origen, destino, valorFinal
     public List<String[]> listarTodosRaw() {
         return new ArrayList<>(ticketsRaw);
     }
@@ -87,7 +99,7 @@ public class TicketDao {
         return null;
     }
  
-    // UPDATE - reemplaza el ticket con el mismo id
+    // UPDATE - reemplazamos el ticket con el mismo id
     public boolean actualizarTicket(Ticket actualizado) {
         for (int i = 0; i < ticketsRaw.size(); i++) {
             if (Integer.parseInt(ticketsRaw.get(i)[0]) == actualizado.getId()) {

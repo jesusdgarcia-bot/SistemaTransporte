@@ -455,6 +455,7 @@ public class Menu {
 
                 case 3:
                     System.out.println("\nPasajeros por tipo:" + estadisticasService.contarPasajerosPorTipo());
+                            
                   
                     break;
 

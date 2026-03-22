@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package sistematransporte.service;
 
 import sistematransporte.dao.TicketDao;
@@ -12,6 +9,7 @@ import sistematransporte.model.Ticket;
 import sistematransporte.model.Vehiculo;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,17 +19,45 @@ import java.util.List;
  * @author Equipo
  */
 public class TicketService {
+
+    private static final int MAX_TICKETS_POR_DIA = 3;
+
+    // Lista de festivos en colokbia formato MM-DD
+    private static final List<String> FESTIVOS = Arrays.asList(
+        "01-01", // Año Nuevo
+        "01-06", // Reyes Magos
+        "03-24", // San Jose
+        "04-17", // Jueves Santo
+        "04-18", // Viernes Santo
+        "05-01", // Dia del Trabajo
+        "06-02", // Ascension de Jesus
+        "06-23", // Corpus Christi
+        "07-20", // Dia de la Independencia
+        "08-07", // Batalla de Boyaca
+        "10-13", // Dia de la Raza
+        "11-03", // Todos los Santos
+        "12-25"  
+    );
+
     private TicketDao ticketDao;
     private PasajeroDao pasajeroDao;
     private VehiculoDAO vehiculoDao;
+    private LocalDate fecha;
  
+
     public TicketService() {
         this.ticketDao = new TicketDao();
         this.pasajeroDao = new PasajeroDao();
         this.vehiculoDao = new VehiculoDAO();
 
+
     }
- 
+
+    // Verifica si una fecha es festivo colombiano
+    private boolean esFestivo() {
+        String mesDia = String.format("%02d-%02d", fecha.getMonthValue(), fecha.getDayOfMonth());
+        return FESTIVOS.contains(mesDia);
+    }
 
     public boolean venderTicket(String cedulaPasajero, String placaVehiculo,
                                 String origen, String destino) {
@@ -43,7 +69,7 @@ public class TicketService {
             return false;
         }
  
-        
+        // Buscar vehiculo
         Vehiculo vehiculo = vehiculoDao.buscar(placaVehiculo);
         if (vehiculo == null) {
             System.out.println("Vehiculo no encontrado: " + placaVehiculo);
@@ -56,16 +82,32 @@ public class TicketService {
             System.out.println("El vehiculo " + placaVehiculo + " no tiene cupos disponibles.");
             return false;
         }
+
+        // REGLA 1 - limite de 3 tickets por dia
+        LocalDate hoy = LocalDate.now();
+        String fechaHoy = hoy.toString();
+
+        int ticketsHoy = ticketDao.contarPorPasajeroYFecha(cedulaPasajero, fechaHoy);
+        if (ticketsHoy >= MAX_TICKETS_POR_DIA) {
+            System.out.println("Venta rechazada: el pasajero " + pasajero.getNombre()
+                + " ya tiene " + ticketsHoy + " ticket(s) para hoy ("
+                + fechaHoy + "). Maximo permitido: " + MAX_TICKETS_POR_DIA + ".");
+            return false;
+        }
+
+        // REGLA 2 - recargo si es festivo
+        boolean festivo = esFestivo();
+        if (festivo) {
+            System.out.println("Aviso: hoy es festivo, se aplica un recargo del 20%.");
+        }
         
         int nuevoId = ticketDao.generarNuevoId();
-        String fecha = LocalDate.now().toString();
-        Ticket ticket = new Ticket(nuevoId, pasajero, vehiculo, fecha, origen, destino);
+        Ticket ticket = new Ticket(nuevoId, pasajero, vehiculo, fechaHoy, origen, destino,esFestivo());
         
         vehiculo.venderTicket();
         ticketDao.guardarTicket(ticket);
-        System.out.println("Ticket vendido! ID: " + nuevoId + " | Valor: $" + ticket.getValorFinal());
+        System.out.println("Ticket vendido! ID: " + nuevoId + " | Valor: $" + String.format("%.0f", ticket.getValorFinal()));
         return true;
-        
 }
     
     // read - listar todos los tickets
@@ -93,7 +135,7 @@ public class TicketService {
         Pasajero pasajero = pasajeroDao.buscarPorCedula(raw[1]);
         if (pasajero == null) return false;
  
-        Ticket actualizado = new Ticket(id, pasajero, null, raw[3], nuevoOrigen, nuevoDestino);
+        Ticket actualizado = new Ticket(id, pasajero, null, raw[3], nuevoOrigen, nuevoDestino,esFestivo());
         actualizado.setValorFinal(Double.parseDouble(raw[6]));
  
         boolean ok = ticketDao.actualizarTicket(actualizado);

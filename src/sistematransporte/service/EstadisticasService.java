@@ -1,9 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package sistematransporte.service;
 
+import java.util.HashMap;
 import sistematransporte.dao.PasajeroDao;
 import sistematransporte.dao.TicketDao;
 import sistematransporte.model.interfaces.Calculable;
@@ -12,7 +10,6 @@ import sistematransporte.model.PasajeroAdultoMayor;
 import sistematransporte.model.PasajeroEstudiante;
 import sistematransporte.model.PasajeroRegular;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +27,7 @@ private PasajeroDao pasajeroDao;
         this.pasajeroDao = new PasajeroDao();
     }
  
-    
+    // Suma el valorFinal de todos los tickets
     public double calcularTotal() {
         double total = 0;
         for (String[] t : ticketDao.listarTodosRaw()) {
@@ -41,8 +38,12 @@ private PasajeroDao pasajeroDao;
         }
         return total;
     }
- 
-    
+
+    // Retorna el total de tickets vendidos
+    public int contarTotalTickets() {
+        return ticketDao.listarTodosRaw().size();
+    }
+
     public Map<String, Integer> contarPasajerosPorTipo() {
         Map<String, Integer> conteo = new HashMap<>();
         conteo.put("REGULAR", 0);
@@ -61,29 +62,29 @@ private PasajeroDao pasajeroDao;
         return conteo;
     }
  
-   
+    // Retorna la placa del vehiculo con mas tickets vendidos
     public String vehiculoConMasTickets() {
-        Map<String, Integer> conteo = new HashMap<>();
- 
-        for (String[] t : ticketDao.listarTodosRaw()) {
-            String placa = t[2]; // posicion 2 = placaVehiculo
-            conteo.put(placa, conteo.getOrDefault(placa, 0) + 1);
-        }
- 
+        List<String[]> lista = ticketDao.listarTodosRaw();
+
+        if (lista.isEmpty()) return "Sin datos";
+
         String mejorPlaca = "Sin datos";
-        int maxTickets = 0;
- 
-        for (Map.Entry<String, Integer> entry : conteo.entrySet()) {
-            if (entry.getValue() > maxTickets) {
-                maxTickets = entry.getValue();
-                mejorPlaca = entry.getKey();
+        int maxConteo = 0;
+
+        for (String[] ticket : lista) {
+            String placaActual = ticket[2];
+            int conteo = 0;
+            for (String[] t : lista) {
+                if (t[2].equalsIgnoreCase(placaActual)) conteo++;
+            }
+            if (conteo > maxConteo) {
+                maxConteo = conteo;
+                mejorPlaca = placaActual;
             }
         }
         return mejorPlaca;
     }
- 
- 
-    public void mostrarResumenCompleto() {
+  public void mostrarResumenCompleto() {
         System.out.println("========================================");
         System.out.println("       RESUMEN ESTADISTICAS TRANSCESAR  ");
         System.out.println("========================================");
@@ -102,5 +103,5 @@ private PasajeroDao pasajeroDao;
  
         System.out.println("\nVehiculo con mas ventas: " + vehiculoConMasTickets());
         System.out.println("========================================");
-    }
+  }
 }

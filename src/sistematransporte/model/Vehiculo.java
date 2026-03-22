@@ -135,4 +135,7 @@ public abstract class Vehiculo implements Imprimible, Calculable {
                        "| Estado: " + (getEstado() ? "Disponible"  : "No Disponible") + 
                        "| Id Licencia Conductor: " + (getIdLicenciaConductor() != null ? getIdLicenciaConductor() : "No Hay Conductor Asignado"));
   }
+  public boolean tienecupos(){
+      return pasajerosActuales<capacidadMaxima;
+  }
 }
