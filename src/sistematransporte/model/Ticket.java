@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package sistematransporte.model;
 import sistematransporte.model.interfaces.Calculable;
 import sistematransporte.model.interfaces.Imprimible;
@@ -19,26 +16,31 @@ public class Ticket implements Calculable, Imprimible {
     private String origen;
     private String destino;
     private double valorFinal;
- 
+    private boolean esFestivo; // true si el ticket se compro en dia festivo
+
     public Ticket(int id, Pasajero pasajero, Vehiculo vehiculo,
-                  String fechaCompra, String origen, String destino) {
+                  String fechaCompra, String origen, String destino, boolean esFestivo) {
         this.id = id;
         this.pasajero = pasajero;
         this.vehiculo = vehiculo;
         this.fechaCompra = fechaCompra;
         this.origen = origen;
         this.destino = destino;
+        this.esFestivo = esFestivo;
         // Calcula el valor automaticamente al crear el ticket
         calcularTotal();
     }
-     /**
-     * valorFinal = tarifaBase * (1 - descuento del pasajero)
-     */
+
+    
     @Override
     public double calcularTotal() {
-        valorFinal = vehiculo.getTarifa() * (1 - pasajero.calcularDescuento());
+        double recargo = esFestivo ? 1.20 : 1.0;
+        valorFinal = vehiculo.getTarifa() * recargo * (1 - pasajero.calcularDescuento());
         return valorFinal;
     }
+
+    public boolean isEsFestivo() { return esFestivo; }
+    public void setEsFestivo(boolean esFestivo) { this.esFestivo = esFestivo; }
 
     
      @Override
